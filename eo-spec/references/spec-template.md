@@ -1,6 +1,6 @@
-# 模块 spec.md 固定模板
+# 模块 spec 固定模板
 
-eo-spec 按下方模板写入 `eo-doc/dev/<module-name>/spec.md`。
+eo-spec 在 `eo-doc/dev/<module-name>/` 下按下方模板写入两份文件：**spec.md**（模块能力基线活文档）与 **spec-history.md**（归档流水，从 spec.md 剥离以控制 spec 体量）。
 
 ```markdown
 ---
@@ -139,14 +139,39 @@ flowchart TD
 列出所有尚未解决的问题，标注负责人和期望解决日期。
 如全部已解决则标注"无"。
 
-## 9. 关联变更
+---
 
-> 此章节由 eo-archive 自动维护，归档的 change 会追加到此表。
+> **变更历史**：本模块的「关联变更」与「变更记录」见 [spec-history.md](spec-history.md)（与 spec.md 同目录）。
+> 该文件由 eo-spec 在模块初始化时创建、由 eo-archive 在每次归档时自动追加。
+```
+
+## 变更历史文件 spec-history.md
+
+「关联变更」「变更记录」是随 change 单调增长的归档流水——只增不减、对"模块当前能做什么"零贡献。把它们留在 spec.md 正文里会让活文档持续膨胀、最终超出单次读取上限。因此剥离到同目录的 `spec-history.md`：
+
+- **eo-spec** 在模块初始化时按下方模板创建它（含「模块初始化」初始记录行）。
+- **eo-archive** 在每次归档时往它的两张表各追加一行，不再写 spec.md。
+
+```markdown
+---
+title: <模块名称> 变更历史
+module_name: <module-name>
+updated: YYYY-MM-DD
+---
+
+# <模块名称> 变更历史
+
+> 本文件由 eo-spec 创建、eo-archive 在每次归档时自动维护。**请勿手工编辑。**
+> 模块当前能力基线见 [spec.md](spec.md)。
+
+## 关联变更
+
+> 每归档一个 change，eo-archive 在此表追加一行。
 
 | 变更 | 日期 | 摘要 |
 |------|------|------|
 
-## 10. 变更记录
+## 变更记录
 
 | 日期 | 变更内容 | 变更人 |
 |------|---------|--------|

@@ -25,7 +25,7 @@ description: |
 2. **不模糊**：每个需求边界必须确定，In Scope / Out of Scope 必须明确列出
 3. **不写代码**：绝不写任何代码，包括伪代码。只用自然语言描述需求行为
 4. **活文档属性**：spec 不是一次性产物，会随后续 change 的 Delta 合并持续演化
-5. **固定产出**：输出到 `eo-doc/dev/<module-name>/spec.md`
+5. **固定产出**：输出到 `eo-doc/dev/<module-name>/`——`spec.md`（能力基线活文档）+ `spec-history.md`（变更历史）
 
 ## 模板发现
 
@@ -46,7 +46,8 @@ description: |
 
 1. 确定 `module-name`（小写英文 kebab-case，如 `inventory` / `transport-queue`）
 2. 创建目录 `eo-doc/dev/<module-name>/`（如不存在）
-3. 按下方固定模板写入 `eo-doc/dev/<module-name>/spec.md`
+3. 按 spec.md 模板写入 `eo-doc/dev/<module-name>/spec.md`
+4. 按 spec-history.md 模板写入 `eo-doc/dev/<module-name>/spec-history.md`：「变更记录」表填入初始行 `| <今天日期> | 模块初始化 | eo-module-init |`，「关联变更」表保持空表头（后续由 eo-archive 维护）
 
 ### 第三步：用户确认
 
@@ -59,7 +60,7 @@ description: |
 
 ## 固定模板
 
-见 [references/spec-template.md](references/spec-template.md)。
+见 [references/spec-template.md](references/spec-template.md)（含 spec.md 与 spec-history.md 两份模板）。
 
 ## 流程图 / 架构图（活文档）
 

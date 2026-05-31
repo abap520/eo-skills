@@ -19,6 +19,7 @@ description: 将已审查通过的 change 的 Spec Delta 合并回模块 spec.md
 - **必须能找到 `.eo-project.json`**（cwd 或父目录）。找不到 → 报错退出，提示运行 `/eo-project-init`。所有 `eo-doc/` 路径通过 `.eo-project.json` 的 `doc_root` 字段解析
 - 用户给定 `<module-name>` 和 `<change-id>`（如 `/eo-archive inventory 015-add-sort`）
 - `eo-doc/dev/<module-name>/spec.md` 存在
+- `eo-doc/dev/<module-name>/spec-history.md` 存在（旧模块若缺失，第五步会按模板补建，不视为前置失败）
 - `eo-doc/dev/<module-name>/changes/<change-id>/change.md` 存在且 `status: done`
 - 对应的 `review.md` 存在且审查通过（无 P0/P1 剩余）
 - 对应的 `test.md` 存在且通过（若 change 要求了测试）
@@ -35,9 +36,10 @@ description: 将已审查通过的 change 的 Spec Delta 合并回模块 spec.md
    - `feature` / `enhance` / `refactor` → **Delta 合并模式**（执行后续所有步骤）
 3. 读 `changes/<change-id>/review.md`，确认结论为通过
 4. 读 `changes/<change-id>/test.md`（若存在），确认通过
-5. 读模块 `spec.md`
-   - Delta 模式：定位所有 Delta 涉及的章节
-   - bootstrap 模式：仅用于第五步元信息更新和第八步汇报
+5. 读模块 `spec.md` —— **不整篇读**（spec 是活文档，可能超出单次读取上限）：
+   - 先读 frontmatter，再用 `Grep`（pattern `^#{1,3} `、带行号）取章节地图
+   - Delta 模式：按章节地图用 `Read` 的 offset/limit 定位到 Delta 涉及的章节，不读无关章节
+   - bootstrap 模式：spec.md 正文无需读，章节地图留作第八步"剩余未认领章节"汇报用
 
 ### 第二步：解析 Delta（仅 Delta 模式）
 
@@ -90,24 +92,30 @@ description: 将已审查通过的 change 的 Spec Delta 合并回模块 spec.md
 
 所有合并操作用 Edit 工具逐条执行，保持 diff 清晰。
 
-### 第五步：更新 spec.md 元信息
+### 第五步：更新 spec-history.md 与 spec.md 元信息
 
-> **bootstrap 与 Delta 模式均执行此步**。bootstrap 模式下仅元信息变更，spec 正文不动。
+> **bootstrap 与 Delta 模式均执行此步。** 归档流水统一落到 `spec-history.md`，不再写入 spec.md 正文。
 
-1. frontmatter `updated` 改为今天日期
-2. 在 `## 9 关联变更`（或 `## 关联变更`）表末尾追加一行：
+1. **定位 `eo-doc/dev/<module-name>/spec-history.md`**：
+   - 存在 → 直接使用
+   - 不存在（本次改造前建的旧模块）→ 按 spec-template.md 的 spec-history.md 模板补建；若旧 `spec.md` 仍内联 `## 9 关联变更` / `## 10 变更记录`，把已有表行整体迁入新文件后，再从 spec.md 删除这两个章节（其余正文不动）
+2. 在 spec-history.md 的 `## 关联变更` 表末尾追加一行：
    ```
    | [<change-id>](changes/<change-id>/change.md) | YYYY-MM-DD | <change summary> |
    ```
    bootstrap 模式下 summary 前缀加 `[bootstrap]`，如 `[bootstrap] 实现 §3.1 / §3.3`
-3. 在 `## 10 变更记录` 追加一行：
+3. 在 spec-history.md 的 `## 变更记录` 表末尾追加一行：
    - Delta 模式：`| YYYY-MM-DD | 归档 <change-id>: <一句话描述> | eo-archive |`
    - bootstrap 模式：`| YYYY-MM-DD | bootstrap 实现 <认领章节列表> (<change-id>) | eo-archive |`
+4. spec-history.md frontmatter `updated` 改为今天日期
+5. **spec.md frontmatter `updated`**：
+   - Delta 模式 → 改为今天日期（第四步已改动 spec.md 正文）
+   - bootstrap 模式 → **不动 spec.md**（正文与元信息均不变，归档活动只记录在 spec-history.md；唯一例外是步骤 1 对旧模块的一次性 §9/§10 迁移）
 
 ### 第六步：更新 change.md
 
 1. frontmatter `status` 从 `done` 改为 `archived`
-2. `## 10 实施记录` 填入归档日期
+2. frontmatter `updated` 改为今天日期（即归档日期）
 
 ### 第七步：更新索引
 
@@ -122,13 +130,14 @@ description: 将已审查通过的 change 的 Spec Delta 合并回模块 spec.md
 - 合并的 Delta 条数（ADDED N / MODIFIED N / REMOVED N）
 - spec.md 受影响的章节列表
 - 冲突处理记录（若有）
+- spec-history.md 已追加本次归档记录
 - change 状态已改为 archived
 
 **bootstrap 模式**：
 - 实现的 spec 章节列表（来自 §3.B.1）
 - 该模块剩余未被任何 bootstrap 认领的 spec 章节（提示用户后续可继续拆 bootstrap change）
+- spec.md 未变更；归档记录已追加到 spec-history.md
 - change 状态已改为 archived
-- spec.md 正文未变更，仅元信息更新
 
 **spec 复检建议**：根据本次归档对 spec 的影响给出建议：
 
@@ -176,5 +185,5 @@ description: 将已审查通过的 change 的 Spec Delta 合并回模块 spec.md
   - bootstrap 模式：§3.B.1 没写认领章节 → 拒绝归档
 - **类型内容一致**：change_type 与 §3 内容必须匹配（bootstrap 不能有 Delta，反之亦然），错配 → 拒绝归档
 - **单一目标 spec**：一个 change 只能归档到单一模块的 `spec.md`。Delta 含跨模块条目 → 拒绝归档，要求拆 change（见第二步）
-- **bootstrap 不动 spec 正文**：只更新元信息（§9 表、§10 表、frontmatter `updated`）
+- **bootstrap 不动 spec.md**：归档记录只追加到 spec-history.md，spec.md 正文与元信息均不变
 - **保持 diff 可读**：用 Edit 逐条合并，不要 Write 整文件覆盖 spec.md

@@ -86,6 +86,7 @@ eo-doc/
 eo-doc/dev/
 └── <module-name>/              ← 一个业务模块 = 一个目录
     ├── spec.md                 ← 活文档：模块当前能力快照（工程视角）
+    ├── spec-history.md         ← 归档流水（关联变更 / 变更记录），从 spec.md 剥离
     ├── spec-review.md          ← 仅模块初始化时一次性审查（可选）
     └── changes/
         ├── INDEX.md            ← 模块内 change 时间线

@@ -94,7 +94,7 @@ flowchart TD
 ### 分支 B — 实现范围（bootstrap）
 
 > **bootstrap change 不改 spec，不产生 Delta**。spec 已经声明了能力，本 change 只是把它们落成代码。
-> 归档时 eo-archive 跳过 Delta 合并，仅更新 §9 关联变更 / §10 变更记录。
+> 归档时 eo-archive 跳过 Delta 合并，仅在 spec-history.md 追加「关联变更 / 变更记录」记录。
 
 #### 3.B.1 认领的 spec 章节
 
@@ -214,14 +214,4 @@ flowchart TD
 ## 9. 开放问题
 
 列出尚未解决的问题。若无则标"无"。
-
-## 10. 实施记录
-
-> 此章节由 eo-implement / eo-test / eo-review 增量追加，change 作者初始不需要填。
-
-- **实施日期**：
-- **偏差记录**：链接 `implement.md`（若有）
-- **测试报告**：链接 `test.md`
-- **审查报告**：链接 `review.md`
-- **归档日期**：
 ```

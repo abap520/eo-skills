@@ -36,7 +36,7 @@ description: |
 注意：
 - 术语统一为 `module-name`（不是 spec-name）
 - spec 定位是"模块当前能力快照 + 持续活文档"，而非"一次性功能规格"
-- 模板里的"关联变更"表初始为空，后续由 eo-archive 维护
+- spec.md 同目录会一并生成 spec-history.md（变更历史）：「变更记录」表含「模块初始化」初始行、「关联变更」表初始为空，后续由 eo-archive 维护
 
 ### 第三步：用户确认 → status: confirmed
 
