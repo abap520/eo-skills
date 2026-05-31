@@ -48,7 +48,7 @@ description: |
 2. **从 frontmatter 读取 `change_type`**，确定审查模式：
    - `bootstrap` → **实现范围模式**（不审 Delta，审"认领范围合规性"）
    - `feature` / `enhance` / `refactor` → **Delta 模式**（审 ADDED/MODIFIED/REMOVED 合规性）
-3. 读 `eo-doc/dev/<module-name>/spec.md`（模块基线）
+3. 读 `eo-doc/dev/<module-name>/spec.md`（模块基线）——先读 frontmatter + 用 `Grep` 取章节地图（`^#{1,3} `），再 `Read`（offset/limit）定位 change §3 各 Delta 条目指向的章节；spec 较大时不要整篇读
 4. 读同模块最近 3 个 change（包括 bootstrap 与 mutation 类，前者是为了核对认领边界，后者是为了避免冲突）
 5. 若模块有 `doc/<module>.md`（玩法层业务文档）→ 读，理解业务背景
 6. **执行模板发现**（见上方）

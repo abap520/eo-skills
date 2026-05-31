@@ -30,7 +30,8 @@ description: 根据 change.md 的 TODO 落地代码；也负责 change 生命周
 ### 模式一：首次实施（按 change 的 TODO 实现）
 
 1. **阅读上下文**
-   - change.md（主输入）、模块 spec.md（基线参考）
+   - change.md（主输入）
+   - 模块 spec.md（基线参考）——不整篇读：先用 `Grep` 取章节地图（`^#{1,3} `），再 `Read`（offset/limit）change 涉及的章节
    - 项目级背景文档（若存在）
    - 现有代码，理解命名规范与既有模式
 

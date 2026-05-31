@@ -39,7 +39,7 @@ description: |
 
 ### 第一步：阅读上下文
 
-1. 阅读 `eo-doc/dev/<module-name>/spec.md`
+1. 阅读 `eo-doc/dev/<module-name>/spec.md`（需通读全文做完整性审查）——若文件较大、单次 `Read` 超限，先用 `Grep` 取章节地图（`^#{1,3} `）再按 offset/limit 分段读全，不可因超限而漏读章节
 2. 阅读项目级背景文档（如果存在），理解整体背景
 3. **执行模板发现**（见上方），确定是否启用多层审查维度
 4. 扫描 `eo-doc/dev/` 下其他 spec 的 frontmatter，检查跨功能一致性

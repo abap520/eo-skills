@@ -57,7 +57,7 @@ description: |
 
 ### 第一步：阅读上下文
 
-1. 阅读 `eo-doc/dev/<module-name>/spec.md`（模块活文档基线）
+1. 阅读 `eo-doc/dev/<module-name>/spec.md`（模块活文档基线）——先读 frontmatter + 用 `Grep` 取章节地图（`^#{1,3} `），再 `Read`（offset/limit）本次 change 涉及的章节（通常 §3 功能需求 / §6 AC）；spec 较大时不要整篇读
 2. 阅读 `eo-doc/dev/<module-name>/changes/<change-id>/change.md`（本次变更的 §3、实施方案、TODO、AC）
    - 从 frontmatter 读取 `change_type`：
      - `bootstrap` → §3 是认领的 spec 章节，审查时对照 spec 这些章节定义的能力检查代码实现
